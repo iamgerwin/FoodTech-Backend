@@ -9,13 +9,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('tenant_id');
+            $table->uuid('id')->primary();
+            $table->uuid('tenant_id');
             $table->string('order_number', 50)->unique();
-            $table->unsignedBigInteger('customer_id');
-            $table->unsignedBigInteger('restaurant_id');
-            $table->unsignedBigInteger('branch_id');
-            $table->unsignedBigInteger('delivery_address_id');
+            $table->uuid('customer_id');
+            $table->uuid('restaurant_id');
+            $table->uuid('branch_id');
+            $table->uuid('delivery_address_id');
             $table->string('status', 50)->default('pending');
             $table->string('order_type', 50)->default('delivery');
             $table->string('payment_status', 50)->default('pending');

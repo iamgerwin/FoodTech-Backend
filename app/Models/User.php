@@ -14,6 +14,35 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
     /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
+     * The data type of the primary key ID.
+     *
+     * @var string
+     */
+    protected $keyType = 'string';
+
+    /**
+     * Boot function from Laravel.
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->{$model->getKeyName()})) {
+                $model->{$model->getKeyName()} = (string) \Illuminate\Support\Str::uuid();
+            }
+        });
+    }
+
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
@@ -45,6 +74,22 @@ class User extends Authenticatable
     public function tenant()
     {
         return $this->belongsTo(Tenant::class);
+    }
+
+    /**
+     * Get the customer profile associated with the user.
+     */
+    public function customerProfile()
+    {
+        return $this->hasOne(CustomerProfile::class);
+    }
+
+    /**
+     * Get the customer addresses for the user.
+     */
+    public function addresses()
+    {
+        return $this->hasMany(CustomerAddress::class, 'customer_id', 'id');
     }
 
     /**

@@ -9,9 +9,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('food_chains', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('tenant_id');
-            $table->unsignedBigInteger('owner_id');
+            $table->uuid('id')->primary();
+            $table->uuid('tenant_id');
+            $table->uuid('owner_id');
             $table->string('name', 255);
             $table->text('description')->nullable();
             $table->string('logo', 255)->nullable();

@@ -9,6 +9,30 @@ class RestaurantBranch extends Model
 {
     use HasFactory;
 
+    /**
+     * The primary key type is string (UUID).
+     * @var string
+     */
+    protected $keyType = 'string';
+
+    /**
+     * The primary key is non-incrementing.
+     * @var bool
+     */
+    public $incrementing = false;
+    use HasFactory;
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->{$model->getKeyName()})) {
+                $model->{$model->getKeyName()} = (string) \Illuminate\Support\Str::uuid();
+            }
+        });
+    }
+
     protected $fillable = [
         'tenant_id',
         'restaurant_id',

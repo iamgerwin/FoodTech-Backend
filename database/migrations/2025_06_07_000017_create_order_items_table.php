@@ -9,10 +9,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('order_items', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('tenant_id');
-            $table->unsignedBigInteger('order_id');
-            $table->unsignedBigInteger('menu_item_id');
+            $table->uuid('id')->primary();
+            $table->uuid('tenant_id');
+            $table->uuid('order_id');
+            $table->uuid('menu_item_id');
             $table->integer('quantity')->default(1);
             $table->decimal('unit_price', 8, 2);
             $table->decimal('total_price', 10, 2);

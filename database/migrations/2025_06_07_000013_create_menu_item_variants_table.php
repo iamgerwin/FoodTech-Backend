@@ -9,9 +9,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('menu_item_variants', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('tenant_id');
-            $table->unsignedBigInteger('menu_item_id');
+            $table->uuid('id')->primary();
+            $table->uuid('tenant_id');
+            $table->uuid('menu_item_id');
             $table->string('name', 255);
             $table->string('type', 50);
             $table->decimal('price_modifier', 8, 2)->default(0);

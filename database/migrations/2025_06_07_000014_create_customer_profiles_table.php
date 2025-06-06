@@ -9,9 +9,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('customer_profiles', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('tenant_id');
-            $table->unsignedBigInteger('user_id');
+            $table->uuid('id')->primary();
+            $table->uuid('tenant_id');
+            $table->uuid('user_id');
             $table->date('date_of_birth')->nullable();
             $table->string('gender', 20)->nullable();
             $table->integer('loyalty_points')->default(0);

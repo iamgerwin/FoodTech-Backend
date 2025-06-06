@@ -9,12 +9,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('reviews', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('tenant_id');
-            $table->unsignedBigInteger('order_id');
-            $table->unsignedBigInteger('reviewer_id');
+            $table->uuid('id')->primary();
+            $table->uuid('tenant_id');
+            $table->uuid('order_id');
+            $table->uuid('reviewer_id');
             $table->string('reviewee_type', 50);
-            $table->unsignedBigInteger('reviewee_id');
+            $table->uuid('reviewee_id');
             $table->integer('rating');
             $table->text('comment')->nullable();
             $table->boolean('is_anonymous')->default(false);

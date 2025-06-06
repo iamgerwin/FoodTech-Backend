@@ -9,9 +9,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('payment_transactions', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('tenant_id');
-            $table->unsignedBigInteger('order_id');
+            $table->uuid('id')->primary();
+            $table->uuid('tenant_id');
+            $table->uuid('order_id');
             $table->string('transaction_id', 255)->unique();
             $table->string('payment_method', 50);
             $table->string('payment_provider', 100)->nullable();

@@ -9,9 +9,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('customer_addresses', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('tenant_id');
-            $table->unsignedBigInteger('customer_id');
+            $table->uuid('id')->primary();
+            $table->uuid('tenant_id');
+            $table->uuid('customer_id');
             $table->string('label', 100)->nullable();
             $table->text('address_line1');
             $table->text('address_line2')->nullable();

@@ -9,11 +9,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('coupon_usages', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('tenant_id');
-            $table->unsignedBigInteger('coupon_id');
-            $table->unsignedBigInteger('order_id');
-            $table->unsignedBigInteger('customer_id');
+            $table->uuid('id')->primary();
+            $table->uuid('tenant_id');
+            $table->uuid('coupon_id');
+            $table->uuid('order_id');
+            $table->uuid('customer_id');
             $table->decimal('discount_amount', 8, 2);
             $table->timestamp('used_at')->useCurrent();
             $table->timestamps();

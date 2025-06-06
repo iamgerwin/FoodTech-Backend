@@ -9,9 +9,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('coupons', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('tenant_id');
-            $table->unsignedBigInteger('restaurant_id')->nullable();
+            $table->uuid('id')->primary();
+            $table->uuid('tenant_id');
+            $table->uuid('restaurant_id')->nullable();
             $table->string('code', 100)->unique();
             $table->string('name', 255);
             $table->text('description')->nullable();

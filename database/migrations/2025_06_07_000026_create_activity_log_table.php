@@ -9,14 +9,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('activity_log', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->uuid('id')->primary();
             $table->string('log_name', 255)->nullable();
             $table->text('description');
             $table->string('subject_type', 255)->nullable();
             $table->string('event', 255)->nullable();
-            $table->unsignedBigInteger('subject_id')->nullable();
+            $table->uuid('subject_id')->nullable();
             $table->string('causer_type', 255)->nullable();
-            $table->unsignedBigInteger('causer_id')->nullable();
+            $table->uuid('causer_id')->nullable();
             $table->json('properties')->nullable();
             $table->uuid('batch_uuid')->nullable();
             $table->timestamps();

@@ -9,10 +9,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('restaurant_branches', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('tenant_id');
-            $table->unsignedBigInteger('restaurant_id');
-            $table->unsignedBigInteger('manager_id');
+            $table->uuid('id')->primary();
+            $table->uuid('tenant_id');
+            $table->uuid('restaurant_id');
+            $table->uuid('manager_id');
             $table->string('name', 255);
             $table->text('address');
             $table->decimal('latitude', 10, 8)->nullable();

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Tenant; // Added
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -24,13 +25,17 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
+            'tenant_id' => Tenant::factory(), // Changed
+            'name' => $this->faker->name(),
+            'email' => $this->faker->unique()->safeEmail(),
+            'password' => static::$password ??= Hash::make('password'), // Corrected bcrypt and static password usage
+            'phone' => $this->faker->phoneNumber(),
+            'avatar' => $this->faker->optional()->imageUrl(),
+            'is_active' => $this->faker->boolean(90),
+            'user_type' => $this->faker->randomElement(['customer', 'driver', 'manager', 'admin', 'developer']),
         ];
     }
+
 
     /**
      * Indicate that the model's email address should be unverified.

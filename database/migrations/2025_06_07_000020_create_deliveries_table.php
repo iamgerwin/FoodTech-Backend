@@ -9,10 +9,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('deliveries', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('tenant_id');
-            $table->unsignedBigInteger('order_id');
-            $table->unsignedBigInteger('driver_id');
+            $table->uuid('id')->primary();
+            $table->uuid('tenant_id');
+            $table->uuid('order_id');
+            $table->uuid('driver_id');
             $table->string('status', 50)->default('pending');
             $table->text('pickup_address');
             $table->decimal('pickup_latitude', 10, 8)->nullable();

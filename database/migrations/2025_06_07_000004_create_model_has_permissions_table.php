@@ -9,9 +9,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('model_has_permissions', function (Blueprint $table) {
-            $table->unsignedBigInteger('permission_id');
+            $table->uuid('permission_id');
             $table->string('model_type', 255);
-            $table->unsignedBigInteger('model_id');
+            $table->uuid('model_id');
             $table->primary(['permission_id', 'model_id', 'model_type']);
             $table->foreign('permission_id')->references('id')->on('permissions')->onDelete('cascade');
         });
