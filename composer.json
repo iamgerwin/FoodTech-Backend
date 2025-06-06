@@ -1,15 +1,16 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "iamgerwin/foodtech-backend",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
-    "license": "MIT",
+    "description": "FoodTech Backend: Multi-tenant food delivery backend for Laravel 12, PostgreSQL, Filament, Stancl Tenancy, and Spatie Permission. Developed by John Gerwin De las Alas.",
+    "keywords": ["foodtech", "laravel", "multi-tenant", "delivery", "filament", "stancl", "spatie", "backend"],
+    "license": "CopyFree",
     "require": {
         "php": "^8.2",
         "doctrine/dbal": "^4.2",
         "filament/filament": "^3.3",
         "laravel/framework": "^12.0",
+        "laravel/sanctum": "^4.1",
         "laravel/tinker": "^2.10.1",
         "spatie/laravel-permission": "^6.19",
         "stancl/tenancy": "^3.9"
