@@ -24,11 +24,16 @@ class CouponResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('tenant_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('restaurant_id')
-                    ->numeric(),
+                Forms\Components\Select::make('tenant_id')
+                    ->label('Tenant')
+                    ->relationship('tenant', 'name')
+                    ->searchable()
+                    ->required(),
+                Forms\Components\Select::make('restaurant_id')
+                    ->label('Restaurant')
+                    ->relationship('restaurant', 'name')
+                    ->searchable()
+                    ->required(),
                 Forms\Components\TextInput::make('code')
                     ->required()
                     ->maxLength(100),
@@ -37,9 +42,10 @@ class CouponResource extends Resource
                     ->maxLength(255),
                 Forms\Components\Textarea::make('description')
                     ->columnSpanFull(),
-                Forms\Components\TextInput::make('type')
-                    ->required()
-                    ->maxLength(50),
+                Forms\Components\Select::make('type')
+                    ->label('Type')
+                    ->options(collect(\App\Enums\CouponType::cases())->mapWithKeys(fn($case) => [$case->value => ucfirst($case->name)]))
+                    ->required(),
                 Forms\Components\TextInput::make('value')
                     ->required()
                     ->numeric(),
@@ -72,11 +78,11 @@ class CouponResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('tenant_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('tenant.name')
+                    ->label('Tenant')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('restaurant_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('restaurant.name')
+                    ->label('Restaurant')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('code')
                     ->searchable(),

@@ -48,14 +48,14 @@ class CouponUsageResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('tenant_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('tenant.name')
+                    ->label('Tenant')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('coupon_id')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('order_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('order.restaurant.name')
+                    ->label('Restaurant')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('customer_id')
                     ->numeric()
