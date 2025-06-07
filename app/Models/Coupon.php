@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use ApiPlatform\Laravel\Attribute\ApiResource;
+
+#[ApiResource]
 class Coupon extends Model
 {
     use HasFactory;
