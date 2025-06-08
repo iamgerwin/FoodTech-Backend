@@ -32,7 +32,7 @@ class ImportDriversJob implements ShouldQueue
      */
     public function handle()
     {
-        $path = storage_path('app/' . $this->filePath);
+        $path = storage_path('app/public/import/uploads/' . basename($this->filePath));
         $extension = pathinfo($path, PATHINFO_EXTENSION);
         if ($extension === 'csv') {
             $this->importFromCsv($path);
@@ -66,15 +66,17 @@ class ImportDriversJob implements ShouldQueue
         while (($row = fgetcsv($handle)) !== false) {
             $data = array_combine($header, $row);
             if ($data) {
+                // Generate a UUID for the id column
+                $data['id'] = (string) \Illuminate\Support\Str::uuid();
                 $rows[] = $data;
             }
             if (count($rows) >= 500) {
-                Driver::insert($rows);
+                \App\Models\Driver::insert($rows);
                 $rows = [];
             }
         }
         if ($rows) {
-            Driver::insert($rows);
+            \App\Models\Driver::insert($rows);
         }
         fclose($handle);
     }

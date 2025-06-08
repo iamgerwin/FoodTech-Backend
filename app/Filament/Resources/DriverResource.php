@@ -128,28 +128,52 @@ class DriverResource extends Resource
                 //
             ])
             ->actions([
-    Tables\Actions\EditAction::make(),
-    Action::make('importDrivers')
-        ->label('Import Drivers')
-        ->icon('heroicon-o-arrow-down-tray')
-        ->form([
-            Forms\Components\FileUpload::make('import_file')
-                ->label('Import File')
-                ->acceptedFileTypes(['text/csv', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'])
-                ->required(),
-        ])
-        ->action(function (array $data) {
-            /** @var UploadedFile $file */
-            $file = $data['import_file'];
-            $filePath = $file->store('imports'); // stores in storage/app/imports
-            ImportDriversJob::dispatch($filePath);
-            Notification::make()
-                ->title('Import started')
-                ->body('Your import is being processed in the background.')
-                ->success()
-                ->send();
-        }),
+                Tables\Actions\EditAction::make(),
+            ])
+            ->headerActions([
+                Action::make('importDrivers')
+                    ->label('Import Drivers')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->form([
+    Forms\Components\Actions::make([
+    Forms\Components\Actions\Action::make('download_template')
+        ->label('Download sample .csv template')
+        ->url('/driver_import_template.csv', shouldOpenInNewTab: true)
+        ->color('primary')
+        ->icon('heroicon-o-arrow-down-tray'),
+]),
+    Forms\Components\FileUpload::make('import_file')
+        ->label('Import File')
+        ->acceptedFileTypes(['text/csv', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'])
+        ->directory('import/uploads')
+        ->disk('public')
+        ->required(),
 ])
+                    ->action(function (array $data) {
+                        try {
+                            $filePath = $data['import_file'];
+                            $permanentPath = 'import/uploads/' . basename($filePath);
+                            if ($filePath !== $permanentPath) {
+                                \Storage::disk('public')->move($filePath, $permanentPath);
+                                \Storage::disk('public')->copy($filePath, $permanentPath);
+                            }
+                            \Log::info('[Driver Import] Permanent file path:', ['permanentPath' => $permanentPath]);
+                            \Log::info('[Driver Import] File exists after move:', ['exists' => \Storage::disk('public')->exists($permanentPath)]);
+                            ImportDriversJob::dispatch($permanentPath);
+                            Notification::make()
+                                ->title('Import started')
+                                ->body('Your import is being processed in the background.')
+                                ->success()
+                                ->send();
+                        } catch (\Throwable $e) {
+                            Notification::make()
+                                ->title('Import failed')
+                                ->body('Failed to queue import: ' . $e->getMessage())
+                                ->danger()
+                                ->send();
+                        }
+                    }),
+            ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
