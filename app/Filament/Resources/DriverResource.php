@@ -12,6 +12,11 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Actions\Action;
+use Illuminate\Support\Facades\Storage;
+use App\Jobs\ImportDriversJob;
+use Filament\Notifications\Notification;
+use Illuminate\Http\UploadedFile;
 
 class DriverResource extends Resource
 {
@@ -123,8 +128,28 @@ class DriverResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
+    Tables\Actions\EditAction::make(),
+    Action::make('importDrivers')
+        ->label('Import Drivers')
+        ->icon('heroicon-o-arrow-down-tray')
+        ->form([
+            Forms\Components\FileUpload::make('import_file')
+                ->label('Import File')
+                ->acceptedFileTypes(['text/csv', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'])
+                ->required(),
+        ])
+        ->action(function (array $data) {
+            /** @var UploadedFile $file */
+            $file = $data['import_file'];
+            $filePath = $file->store('imports'); // stores in storage/app/imports
+            ImportDriversJob::dispatch($filePath);
+            Notification::make()
+                ->title('Import started')
+                ->body('Your import is being processed in the background.')
+                ->success()
+                ->send();
+        }),
+])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
