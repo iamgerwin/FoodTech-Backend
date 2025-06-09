@@ -5,9 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Traits\HasFoodOrderStateMachine;
+
 class Order extends Model
 {
+    use HasFactory, HasFoodOrderStateMachine;
     use HasFactory;
+
+    // Order states and transitions are now managed in App\Domain\Order\OrderState
 
     /**
      * The primary key type is string (UUID).
@@ -33,6 +38,8 @@ class Order extends Model
 
 
     protected $fillable = [
+        // Add 'status' to fillable if not already present
+        'status',
         'tenant_id',
         'order_number',
         'customer_id',

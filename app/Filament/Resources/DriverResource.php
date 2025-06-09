@@ -3,26 +3,22 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\DriverResource\Pages;
-use App\Filament\Resources\DriverResource\RelationManagers;
+use App\Jobs\ImportDriversJob;
 use App\Models\Driver;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Actions\Action;
-use Illuminate\Support\Facades\Storage;
-use App\Jobs\ImportDriversJob;
-use Filament\Notifications\Notification;
-use Illuminate\Http\UploadedFile;
+use Filament\Tables\Table;
 
 class DriverResource extends Resource
 {
     protected static ?string $model = Driver::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-truck';
+
     protected static ?string $navigationGroup = 'User Management';
 
     public static function form(Form $form): Form
@@ -135,40 +131,40 @@ class DriverResource extends Resource
                     ->label('Import Drivers')
                     ->icon('heroicon-o-arrow-down-tray')
                     ->form([
-    Forms\Components\Actions::make([
-    Forms\Components\Actions\Action::make('download_template')
-        ->label('Download sample .csv template')
-        ->url('/driver_import_template.csv', shouldOpenInNewTab: true)
-        ->color('primary')
-        ->icon('heroicon-o-arrow-down-tray'),
-]),
-    Forms\Components\FileUpload::make('import_file')
-        ->label('Import File')
-        ->acceptedFileTypes(['text/csv', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'])
-        ->directory('import/uploads')
-        ->disk('public')
-        ->required(),
-])
+                        Forms\Components\Actions::make([
+                            Forms\Components\Actions\Action::make('download_template')
+                                ->label('Download sample .csv template')
+                                ->url('/driver_import_template.csv', shouldOpenInNewTab: true)
+                                ->color('primary')
+                                ->icon('heroicon-o-arrow-down-tray'),
+                        ]),
+                        Forms\Components\FileUpload::make('import_file')
+                            ->label('Import File')
+                            ->acceptedFileTypes(['text/csv', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'])
+                            ->directory('import/uploads')
+                            ->disk('public')
+                            ->required(),
+                    ])
                     ->action(function (array $data) {
                         try {
                             $filePath = $data['import_file'];
-                            $permanentPath = 'import/uploads/' . basename($filePath);
+                            $permanentPath = 'import/uploads/'.basename($filePath);
                             if ($filePath !== $permanentPath) {
                                 \Storage::disk('public')->move($filePath, $permanentPath);
                                 \Storage::disk('public')->copy($filePath, $permanentPath);
                             }
                             \Log::info('[Driver Import] Permanent file path:', ['permanentPath' => $permanentPath]);
                             \Log::info('[Driver Import] File exists after move:', ['exists' => \Storage::disk('public')->exists($permanentPath)]);
-                            ImportDriversJob::dispatch($permanentPath);
+                            ImportDriversJob::dispatch($permanentPath, auth()->user());
                             Notification::make()
                                 ->title('Import started')
-                                ->body('Your import is being processed in the background.')
+                                ->body('Your import is being processed in the background. You will be notified when it completes or if there are any errors.')
                                 ->success()
                                 ->send();
                         } catch (\Throwable $e) {
                             Notification::make()
                                 ->title('Import failed')
-                                ->body('Failed to queue import: ' . $e->getMessage())
+                                ->body('Failed to queue import: '.$e->getMessage())
                                 ->danger()
                                 ->send();
                         }

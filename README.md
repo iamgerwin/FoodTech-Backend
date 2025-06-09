@@ -34,6 +34,39 @@ You can view the initial ERD for this project here: [Project ERD on dbdiagram.io
 - Delivery: drivers, deliveries
 - Reviews, coupons, coupon_usages, payment_transactions, notifications, activity_log
 
+---
+
+#### Order State Machine (Business Flow)
+Below is a visualization of the allowed order state transitions as implemented in [`app/Domain/Order/OrderState.php`](app/Domain/Order/OrderState.php):
+
+<a href="https://mermaid.live/edit#pako:eNqNVM1ymzAQfhXPHju2h3_bHHpJn6Klo1GQwJqARNZSmtTjd-8GLMdg4pQTu9_PrlYLRyiNkJDDwXIrfyheI29XL1GhF_T8-vZ7sVp9XyitrCJcDOlL2IMoS6lepGCPbwwl-Tjk2g7MeayXdSg7jkrXA_MS9mCltKB3JpDUODDGuSsP35aPemjPtaC61ow8ptnz6Ziltg7K-uP5uIf_cDot1a0MstIdrGm92xxyM5KxZA7pJaXRlcKWEGqRVVKKR14-fSFCWTlio3x2NFw_hzs12q7hSlvmKV4wtrn25l2H5r-YQpaN0p55W-tz1_vcse_EoCcOd0li61BfNmqaPXv6JSRgsoLz2FR2tpWvJS1TLW-kE_y6QTrhsFdM2_2oyREy3NX54ljlmko1zces5vbkrmQyx0-4sIQalYDcopNLIKzl7yEc310KsHvZygJyehUcnwoo9Ik0Hdc_jWm9DI2r95BXvDlQ5Drx8Ve5ZFHSR4gPxmkLebyJexPIj_AKeRRH6zQNo00Y7OIoTJMlvEEe7tZhskmiLM3CJAvSLD4t4W9fNlhvg3CX7rZZkMVxus2S0z8MI69a" target="_blank" rel="noopener noreferrer">Open Mermaid Diagram in New Tab</a>
+```mermaid
+stateDiagram-v2
+    [*] --> initiated
+    initiated --> received_by_restaurant
+    received_by_restaurant --> preparing
+    preparing --> finding_driver
+    finding_driver --> prepared
+    prepared --> handed_to_driver
+    handed_to_driver --> in_transit
+    in_transit --> waiting_for_customer
+    waiting_for_customer --> received_by_customer
+    received_by_customer --> confirmed_and_feedback
+    received_by_customer --> refund_requested
+    received_by_customer --> complaint_received
+    refund_requested --> refund_approved
+    refund_requested --> refund_declined
+    complaint_received --> refund_approved
+    complaint_received --> refund_declined
+    refund_approved --> driver_returning
+    driver_returning --> restaurant_repreparing
+    restaurant_repreparing --> restaurant_driver_exchange
+    restaurant_driver_exchange --> driver_intransit_nth
+    driver_intransit_nth --> customer_fulfilled
+    confirmed_and_feedback --> customer_fulfilled
+    refund_declined --> customer_fulfilled
+```
+
 ### Setup Instructions
 1. **Clone & Install**
    ```bash

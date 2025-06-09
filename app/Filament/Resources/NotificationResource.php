@@ -39,7 +39,11 @@ class NotificationResource extends Resource
                 Forms\Components\TextInput::make('type')
                     ->required()
                     ->maxLength(50),
-                Forms\Components\TextInput::make('data'),
+                Forms\Components\Textarea::make('data')
+                    ->label('Data (raw JSON)')
+                    ->rows(6)
+                    ->formatStateUsing(fn ($state) => is_array($state) || is_object($state) ? json_encode($state, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) : $state)
+                    ->columnSpanFull(),
                 Forms\Components\Toggle::make('is_read')
                     ->required(),
                 Forms\Components\DateTimePicker::make('sent_at')
