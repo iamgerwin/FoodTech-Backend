@@ -3,21 +3,21 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\RestaurantResource\Pages;
-use App\Filament\Resources\RestaurantResource\RelationManagers;
+use App\Filament\Resources\RestaurantResource\RelationManagers\MenuCategoryRelationManager;
+use App\Filament\Resources\RestaurantResource\RelationManagers\MenuItemRelationManager;
 use App\Models\Restaurant;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class RestaurantResource extends Resource
 {
     protected static ?string $model = Restaurant::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
+
     protected static ?string $navigationGroup = 'Business Structure';
 
     public static function form(Form $form): Form
@@ -127,7 +127,8 @@ class RestaurantResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            MenuCategoryRelationManager::class,
+            MenuItemRelationManager::class,
         ];
     }
 
