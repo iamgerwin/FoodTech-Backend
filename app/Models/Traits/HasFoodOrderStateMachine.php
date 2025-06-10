@@ -21,6 +21,7 @@ trait HasFoodOrderStateMachine
     public function canTransitionTo($newState): bool
     {
         $current = $this->{$this->stateAttribute};
+
         return isset(static::$stateTransitions[$current]) && in_array($newState, static::$stateTransitions[$current], true);
     }
 
@@ -30,7 +31,7 @@ trait HasFoodOrderStateMachine
      */
     public function transitionTo($newState): void
     {
-        if (!$this->canTransitionTo($newState)) {
+        if (! $this->canTransitionTo($newState)) {
             throw new \Exception("Invalid state transition from {$this->{$this->stateAttribute}} to {$newState}");
         }
         $this->{$this->stateAttribute} = $newState;

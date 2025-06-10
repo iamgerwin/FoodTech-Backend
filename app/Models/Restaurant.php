@@ -11,12 +11,14 @@ class Restaurant extends Model
 
     /**
      * The primary key type is string (UUID).
+     *
      * @var string
      */
     protected $keyType = 'string';
 
     /**
      * The primary key is non-incrementing.
+     *
      * @var bool
      */
     public $incrementing = false;
@@ -68,5 +70,10 @@ class Restaurant extends Model
     public function menuCategories()
     {
         return $this->hasMany(\App\Models\MenuCategory::class, 'restaurant_id');
+    }
+
+    public function menuItems()
+    {
+        return $this->hasMany(\App\Models\MenuItem::class, 'restaurant_id');
     }
 }

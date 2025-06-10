@@ -5,7 +5,6 @@ namespace Database\Factories;
 use App\Models\Tenant; // Added
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -35,7 +34,6 @@ class UserFactory extends Factory
             'user_type' => $this->faker->randomElement(['customer', 'driver', 'manager', 'admin', 'developer']),
         ];
     }
-
 
     /**
      * Indicate that the model's email address should be unverified.

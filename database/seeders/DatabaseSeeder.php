@@ -103,16 +103,16 @@ class DatabaseSeeder extends Seeder
                                     \App\Models\MenuItem::factory()
                                         ->count(5)
                                         ->has(
-    \App\Models\MenuItemVariant::factory()
-        ->count(2)
-        ->state(function (array $attributes, \App\Models\MenuItem $menuItem) use ($tenant) {
-            return [
-                'tenant_id' => $tenant->id,
-                'menu_item_id' => $menuItem->id,
-            ];
-        }),
-    'variants'
-)
+                                            \App\Models\MenuItemVariant::factory()
+                                                ->count(2)
+                                                ->state(function (array $attributes, \App\Models\MenuItem $menuItem) use ($tenant) {
+                                                    return [
+                                                        'tenant_id' => $tenant->id,
+                                                        'menu_item_id' => $menuItem->id,
+                                                    ];
+                                                }),
+                                            'variants'
+                                        )
                                         ->state(['tenant_id' => $tenant->id, 'restaurant_id' => $restaurant->id, 'category_id' => null]),
                                     'menuItems'
                                 )
@@ -132,16 +132,16 @@ class DatabaseSeeder extends Seeder
                     \App\Models\OrderItem::factory()
                         ->count(2)
                         ->has(
-    \App\Models\OrderItemVariant::factory()
-        ->count(1)
-        ->state(function (array $attributes, \App\Models\OrderItem $orderItem) use ($tenant) {
-            return [
-                'tenant_id' => $tenant->id,
-                'order_item_id' => $orderItem->id,
-            ];
-        }),
-    'variants'
-)
+                            \App\Models\OrderItemVariant::factory()
+                                ->count(1)
+                                ->state(function (array $attributes, \App\Models\OrderItem $orderItem) use ($tenant) {
+                                    return [
+                                        'tenant_id' => $tenant->id,
+                                        'order_item_id' => $orderItem->id,
+                                    ];
+                                }),
+                            'variants'
+                        )
                         ->state(['tenant_id' => $tenant->id]),
                     'items'
                 )

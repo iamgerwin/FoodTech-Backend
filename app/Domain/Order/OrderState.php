@@ -6,23 +6,41 @@ class OrderState
 {
     // Order state constants
     const INITIATED = 'initiated';
+
     const RECEIVED_BY_RESTAURANT = 'received_by_restaurant';
+
     const PREPARING = 'preparing';
+
     const FINDING_DRIVER = 'finding_driver';
+
     const PREPARED = 'prepared';
+
     const HANDED_TO_DRIVER = 'handed_to_driver';
+
     const IN_TRANSIT = 'in_transit';
+
     const WAITING_FOR_CUSTOMER = 'waiting_for_customer';
+
     const RECEIVED_BY_CUSTOMER = 'received_by_customer';
+
     const CONFIRMED_AND_FEEDBACK = 'confirmed_and_feedback';
+
     const REFUND_REQUESTED = 'refund_requested';
+
     const COMPLAINT_RECEIVED = 'complaint_received';
+
     const REFUND_APPROVED = 'refund_approved';
+
     const REFUND_DECLINED = 'refund_declined';
+
     const DRIVER_RETURNING = 'driver_returning';
+
     const RESTAURANT_REPREPARING = 'restaurant_repreparing';
+
     const RESTAURANT_DRIVER_EXCHANGE = 'restaurant_driver_exchange';
+
     const DRIVER_INTRANSIT_NTH = 'driver_intransit_nth';
+
     const CUSTOMER_FULFILLED = 'customer_fulfilled';
 
     // Allowed state transitions (order-specific)

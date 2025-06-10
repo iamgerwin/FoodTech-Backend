@@ -3,21 +3,19 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CouponResource\Pages;
-use App\Filament\Resources\CouponResource\RelationManagers;
 use App\Models\Coupon;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CouponResource extends Resource
 {
     protected static ?string $model = Coupon::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-ticket';
+
     protected static ?string $navigationGroup = 'Promotions & Payments';
 
     public static function form(Form $form): Form
@@ -44,7 +42,7 @@ class CouponResource extends Resource
                     ->columnSpanFull(),
                 Forms\Components\Select::make('type')
                     ->label('Type')
-                    ->options(collect(\App\Enums\CouponType::cases())->mapWithKeys(fn($case) => [$case->value => ucfirst($case->name)]))
+                    ->options(collect(\App\Enums\CouponType::cases())->mapWithKeys(fn ($case) => [$case->value => ucfirst($case->name)]))
                     ->required(),
                 Forms\Components\TextInput::make('value')
                     ->required()

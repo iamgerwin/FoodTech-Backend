@@ -3,22 +3,20 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CouponUsageResource\Pages;
-use App\Filament\Resources\CouponUsageResource\RelationManagers;
 use App\Models\CouponUsage;
 use Filament\Forms;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Forms\Components\TextInput;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CouponUsageResource extends Resource
 {
     protected static ?string $model = CouponUsage::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-ticket';
+
     protected static ?string $navigationGroup = 'Promotions & Payments';
 
     public static function form(Form $form): Form

@@ -3,21 +3,19 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\RestaurantBranchResource\Pages;
-use App\Filament\Resources\RestaurantBranchResource\RelationManagers;
 use App\Models\RestaurantBranch;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class RestaurantBranchResource extends Resource
 {
     protected static ?string $model = RestaurantBranch::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-map';
+
     protected static ?string $navigationGroup = 'Business Structure';
 
     public static function form(Form $form): Form

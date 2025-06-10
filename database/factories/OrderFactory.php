@@ -2,11 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Models\Tenant;
-use App\Models\User;
+use App\Models\CustomerAddress;
 use App\Models\Restaurant;
 use App\Models\RestaurantBranch;
-use App\Models\CustomerAddress;
+use App\Models\Tenant;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,23 +21,23 @@ class OrderFactory extends Factory
      */
     public function definition(): array
     {
-        $tenantId = $this->faker->boolean(50) && Tenant::count() > 0 
-                        ? Tenant::inRandomOrder()->first()->id 
+        $tenantId = $this->faker->boolean(50) && Tenant::count() > 0
+                        ? Tenant::inRandomOrder()->first()->id
                         : Tenant::factory()->create()->id;
 
         $customerId = User::factory()->create(['tenant_id' => $tenantId, 'user_type' => 'customer'])->id;
         $restaurant = Restaurant::factory()->create(['tenant_id' => $tenantId]);
-        
+
         // Assuming RestaurantBranchFactory and CustomerAddressFactory exist and can accept tenant_id and relevant parent IDs
         // If they don't, these lines might need adjustment or those factories need to be created/updated.
         $branchId = RestaurantBranch::factory()->create([
-            'tenant_id' => $tenantId, 
-            'restaurant_id' => $restaurant->id
+            'tenant_id' => $tenantId,
+            'restaurant_id' => $restaurant->id,
         ])->id;
-        
+
         $deliveryAddressId = CustomerAddress::factory()->create([
-            'tenant_id' => $tenantId, 
-            'customer_id' => $customerId
+            'tenant_id' => $tenantId,
+            'customer_id' => $customerId,
         ])->id;
 
         return [
@@ -47,10 +47,10 @@ class OrderFactory extends Factory
             'restaurant_id' => $restaurant->id,
             'branch_id' => $branchId,
             'delivery_address_id' => $deliveryAddressId,
-            'status' => $this->faker->randomElement(['pending','confirmed','preparing','ready','dispatched','delivered','cancelled']),
-            'order_type' => $this->faker->randomElement(['delivery','pickup']),
-            'payment_status' => $this->faker->randomElement(['pending','paid','failed','refunded']),
-            'payment_method' => $this->faker->randomElement(['cash','card','e-wallet']),
+            'status' => $this->faker->randomElement(['pending', 'confirmed', 'preparing', 'ready', 'dispatched', 'delivered', 'cancelled']),
+            'order_type' => $this->faker->randomElement(['delivery', 'pickup']),
+            'payment_status' => $this->faker->randomElement(['pending', 'paid', 'failed', 'refunded']),
+            'payment_method' => $this->faker->randomElement(['cash', 'card', 'e-wallet']),
             'subtotal' => $this->faker->randomFloat(2, 10, 150),
             'tax_amount' => $this->faker->randomFloat(2, 0, 15),
             'delivery_fee' => $this->faker->randomFloat(2, 0, 10),
@@ -67,4 +67,3 @@ class OrderFactory extends Factory
         ];
     }
 }
-

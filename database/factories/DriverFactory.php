@@ -18,13 +18,13 @@ class DriverFactory extends Factory
      */
     public function definition(): array
     {
-        $tenantId = $this->attributes['tenant_id'] 
+        $tenantId = $this->attributes['tenant_id']
             ?? (Tenant::count() > 0 ? Tenant::inRandomOrder()->first()->id : Tenant::factory()->create()->id);
 
-        $userId = $this->attributes['user_id'] 
+        $userId = $this->attributes['user_id']
             ?? User::factory()->create([
-                'tenant_id' => $tenantId, 
-                'user_type' => 'driver' // Assuming 'driver' is a valid user_type
+                'tenant_id' => $tenantId,
+                'user_type' => 'driver', // Assuming 'driver' is a valid user_type
             ])->id;
 
         return [
@@ -47,4 +47,3 @@ class DriverFactory extends Factory
         ];
     }
 }
-

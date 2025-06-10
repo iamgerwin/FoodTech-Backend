@@ -14,6 +14,7 @@ class SendCustomNotificationJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $user;
+
     protected $notificationData;
 
     /**

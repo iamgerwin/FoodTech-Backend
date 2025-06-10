@@ -128,6 +128,7 @@ class RestaurantResource extends Resource
     {
         return [
             MenuCategoryRelationManager::class,
+            MenuItemRelationManager::class,
         ];
     }
 

@@ -18,8 +18,8 @@ class FoodChainFactory extends Factory
      */
     public function definition(): array
     {
-        $tenantId = $this->faker->boolean(50) && Tenant::count() > 0 
-                        ? Tenant::inRandomOrder()->first()->id 
+        $tenantId = $this->faker->boolean(50) && Tenant::count() > 0
+                        ? Tenant::inRandomOrder()->first()->id
                         : Tenant::factory()->create()->id;
 
         $ownerId = User::factory()->create(['tenant_id' => $tenantId])->id;
@@ -38,4 +38,3 @@ class FoodChainFactory extends Factory
         ];
     }
 }
-
