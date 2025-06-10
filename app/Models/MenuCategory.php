@@ -11,15 +11,18 @@ class MenuCategory extends Model
 
     /**
      * The primary key type is string (UUID).
+     *
      * @var string
      */
     protected $keyType = 'string';
 
     /**
      * The primary key is non-incrementing.
+     *
      * @var bool
      */
     public $incrementing = false;
+
     use HasFactory;
 
     protected static function boot()
@@ -29,6 +32,10 @@ class MenuCategory extends Model
         static::creating(function ($model) {
             if (empty($model->{$model->getKeyName()})) {
                 $model->{$model->getKeyName()} = (string) \Illuminate\Support\Str::uuid();
+            }
+            // Set tenant_id from parent restaurant if not set
+            if (empty($model->tenant_id) && $model->restaurant_id) {
+                $model->tenant_id = Restaurant::find($model->restaurant_id)?->tenant_id;
             }
         });
     }

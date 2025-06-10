@@ -64,4 +64,9 @@ class Restaurant extends Model
     {
         return $this->hasMany(RestaurantBranch::class);
     }
+
+    public function menuCategories()
+    {
+        return $this->hasMany(\App\Models\MenuCategory::class, 'restaurant_id');
+    }
 }
