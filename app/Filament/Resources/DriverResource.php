@@ -25,12 +25,16 @@ class DriverResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('tenant_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('user_id')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\Select::make('tenant_id')
+                    ->label('Tenant')
+                    ->options(\App\Models\Tenant::all()->pluck('name', 'id'))
+                    ->searchable()
+                    ->required(),
+                Forms\Components\Select::make('user_id')
+                    ->label('User')
+                    ->options(\App\Models\User::all()->pluck('name', 'id'))
+                    ->searchable()
+                    ->required(),
                 Forms\Components\TextInput::make('license_number')
                     ->maxLength(100),
                 Forms\Components\DatePicker::make('license_expiry'),
@@ -70,11 +74,13 @@ class DriverResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('tenant_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('tenant.name')
+                    ->label('Tenant')
+                    ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('user_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('user.name')
+                    ->label('User')
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('license_number')
                     ->searchable(),
