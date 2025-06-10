@@ -2,10 +2,9 @@
 
 namespace App\Models;
 
+use ApiPlatform\Laravel\Attribute\ApiResource;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
-use ApiPlatform\Laravel\Attribute\ApiResource;
 
 #[ApiResource]
 class Coupon extends Model
@@ -13,6 +12,7 @@ class Coupon extends Model
     use HasFactory;
 
     protected $keyType = 'string';
+
     public $incrementing = false;
 
     protected static function boot()

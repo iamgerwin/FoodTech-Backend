@@ -13,11 +13,12 @@ class TenantFactory extends Factory
     public function definition(): array
     {
         $name = $this->faker->unique()->company();
+
         return [
             'name' => $name,
-            'slug' => Str::slug($name) . '-' . $this->faker->unique()->numberBetween(1000, 9999),
+            'slug' => Str::slug($name).'-'.$this->faker->unique()->numberBetween(1000, 9999),
             'domain' => $this->faker->unique()->domainName(),
-            'database' => 'tenant_' . $this->faker->unique()->numberBetween(1000, 9999),
+            'database' => 'tenant_'.$this->faker->unique()->numberBetween(1000, 9999),
         ];
     }
 }

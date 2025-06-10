@@ -10,6 +10,7 @@ class OrderItem extends Model
     use HasFactory;
 
     protected $keyType = 'string';
+
     public $incrementing = false;
 
     protected static function boot()

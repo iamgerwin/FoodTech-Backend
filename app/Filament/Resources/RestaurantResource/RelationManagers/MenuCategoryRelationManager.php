@@ -4,7 +4,6 @@ namespace App\Filament\Resources\RestaurantResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Resources\RelationManagers\RelationManager;
-
 use Filament\Tables;
 
 class MenuCategoryRelationManager extends RelationManager

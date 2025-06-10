@@ -18,13 +18,13 @@ class CustomerAddressFactory extends Factory
      */
     public function definition(): array
     {
-        $tenantId = $this->attributes['tenant_id'] 
+        $tenantId = $this->attributes['tenant_id']
             ?? (Tenant::count() > 0 ? Tenant::inRandomOrder()->first()->id : Tenant::factory()->create()->id);
 
-        $customerId = $this->attributes['customer_id'] 
+        $customerId = $this->attributes['customer_id']
             ?? User::factory()->create([
-                'tenant_id' => $tenantId, 
-                'user_type' => 'customer' // Assuming 'customer' is a valid user_type
+                'tenant_id' => $tenantId,
+                'user_type' => 'customer', // Assuming 'customer' is a valid user_type
             ])->id;
 
         return [
@@ -44,4 +44,3 @@ class CustomerAddressFactory extends Factory
         ];
     }
 }
-

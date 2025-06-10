@@ -3,21 +3,19 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\FoodChainResource\Pages;
-use App\Filament\Resources\FoodChainResource\RelationManagers;
 use App\Models\FoodChain;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class FoodChainResource extends Resource
 {
     protected static ?string $model = FoodChain::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-building-library';
+
     protected static ?string $navigationGroup = 'Business Structure';
 
     public static function form(Form $form): Form

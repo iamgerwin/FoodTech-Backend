@@ -3,21 +3,19 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\MenuItemVariantResource\Pages;
-use App\Filament\Resources\MenuItemVariantResource\RelationManagers;
 use App\Models\MenuItemVariant;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class MenuItemVariantResource extends Resource
 {
     protected static ?string $model = MenuItemVariant::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-squares-2x2';
+
     protected static ?string $navigationGroup = 'Menu Management';
 
     public static function form(Form $form): Form

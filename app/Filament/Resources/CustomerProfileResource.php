@@ -3,21 +3,19 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CustomerProfileResource\Pages;
-use App\Filament\Resources\CustomerProfileResource\RelationManagers;
 use App\Models\CustomerProfile;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CustomerProfileResource extends Resource
 {
     protected static ?string $model = CustomerProfile::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-identification';
+
     protected static ?string $navigationGroup = 'User Management';
 
     public static function form(Form $form): Form

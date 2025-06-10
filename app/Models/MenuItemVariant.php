@@ -11,12 +11,14 @@ class MenuItemVariant extends Model
 
     /**
      * The primary key type is string (UUID).
+     *
      * @var string
      */
     protected $keyType = 'string';
 
     /**
      * The primary key is non-incrementing.
+     *
      * @var bool
      */
     public $incrementing = false;
