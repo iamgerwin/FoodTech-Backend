@@ -67,6 +67,42 @@ stateDiagram-v2
     refund_declined --> customer_fulfilled
 ```
 
+---
+
+### Driver Proximity Search Logic (`app/Jobs/SearchForNearbyDrivers.php`)
+
+This job is responsible for finding available drivers within a given radius from a location. It supports both a direct search and a progressive search that expands the search radius until a driver is found or a maximum radius is reached.
+
+#### How It Works
+- **Direct Search:**
+  - Find all available drivers within the specified radius using the Haversine formula.
+  - For SQLite (test) environments, the calculation is performed in PHP; for production, it's done in SQL.
+- **Progressive Search:**
+  - Start with a default radius (e.g., 5km).
+  - If no drivers are found, increase the radius by a step (e.g., +5km) every X minutes, up to a maximum (e.g., 20km).
+  - Stop searching as soon as one or more drivers are found or the maximum radius is reached.
+
+#### Flowchart
+```mermaid
+flowchart TD
+    Start([Start])
+    Params{Input: lat, lng, radius, max_radius, step, interval}
+    DirectSearch[Direct Search for Drivers<br>within radius]
+    FoundDrivers{Drivers Found?}
+    ReturnDrivers[Return Drivers]
+    ExpandRadius[Increase radius by step<br>Wait interval (if async)]
+    MaxRadius{Radius > Max?}
+    ReturnEmpty[Return empty<br>no drivers found]
+
+    Start --> Params --> DirectSearch --> FoundDrivers
+    FoundDrivers -- Yes --> ReturnDrivers
+    FoundDrivers -- No --> MaxRadius
+    MaxRadius -- No --> ExpandRadius --> DirectSearch
+    MaxRadius -- Yes --> ReturnEmpty
+```
+
+---
+
 ### Setup Instructions
 1. **Clone & Install**
    ```bash
