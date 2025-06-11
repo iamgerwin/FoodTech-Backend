@@ -87,12 +87,12 @@ This job is responsible for finding available drivers within a given radius from
 flowchart TD
     Start([Start])
     Params{Input: lat, lng, radius, max_radius, step, interval}
-    DirectSearch[Direct Search for Drivers<br>within radius]
+    DirectSearch[Direct Search for Drivers within radius]
     FoundDrivers{Drivers Found?}
     ReturnDrivers[Return Drivers]
-    ExpandRadius[Increase radius by step<br>Wait interval (if async)]
+    ExpandRadius[Increase radius by step; Wait interval]
     MaxRadius{Radius > Max?}
-    ReturnEmpty[Return empty<br>no drivers found]
+    ReturnEmpty[Return empty; no drivers found]
 
     Start --> Params --> DirectSearch --> FoundDrivers
     FoundDrivers -- Yes --> ReturnDrivers
