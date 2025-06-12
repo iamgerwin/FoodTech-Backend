@@ -33,15 +33,18 @@ return new class extends Migration
             ->update([
                 'payment_type' => PaymentTypeEnum::CASH->value,
                 'payment_subtype' => null,
-                'payment_details' => DB::raw("COALESCE(payment_details::text, '{}'::text)")
             ]);
 
-        // 4. Change payment_details to JSON type if it's not already
-        Schema::table('payment_transactions', function (Blueprint $table) {
-            if (Schema::hasColumn('payment_transactions', 'payment_details')) {
-                $table->json('payment_details')->nullable()->change();
-            }
-        });
+        // 4. Ensure all payment_details are valid JSON, then convert to JSONB using the USING clause
+        if (Schema::hasColumn('payment_transactions', 'payment_details')) {
+            // Set NULL or empty to '{}'
+            DB::statement("UPDATE payment_transactions SET payment_details = '{}' WHERE payment_details IS NULL OR payment_details = ''");
+            // Set all non-object/array JSON to '{}'
+            DB::statement("UPDATE payment_transactions SET payment_details = '{}' WHERE payment_details IS NOT NULL AND payment_details <> '' AND NOT (payment_details ~ '^(\\s*\\{.*\\}\\s*|\\s*\\[.*\\]\\s*)$')");
+            // Now safely cast to JSONB
+            DB::statement('ALTER TABLE payment_transactions ALTER COLUMN payment_details TYPE JSONB USING payment_details::jsonb');
+            DB::statement('ALTER TABLE payment_transactions ALTER COLUMN payment_details DROP NOT NULL');
+        }
 
         // 5. Finally, make payment_type required
         Schema::table('payment_transactions', function (Blueprint $table) {
