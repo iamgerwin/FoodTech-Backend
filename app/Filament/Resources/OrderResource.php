@@ -3,12 +3,14 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\OrderResource\Pages;
+use App\Filament\Resources\OrderResource\RelationManagers;
 use App\Models\Order;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
 
 class OrderResource extends Resource
 {
@@ -22,73 +24,121 @@ class OrderResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('tenant_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('order_number')
-                    ->required()
-                    ->maxLength(50),
-                Forms\Components\TextInput::make('customer_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('restaurant_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('branch_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('delivery_address_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('status')
-                    ->required()
-                    ->maxLength(50)
-                    ->default('pending'),
-                Forms\Components\TextInput::make('order_type')
-                    ->required()
-                    ->maxLength(50)
-                    ->default('delivery'),
-                Forms\Components\TextInput::make('payment_status')
-                    ->required()
-                    ->maxLength(50)
-                    ->default('pending'),
-                Forms\Components\TextInput::make('payment_method')
-                    ->maxLength(50),
-                Forms\Components\TextInput::make('subtotal')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('tax_amount')
-                    ->required()
-                    ->numeric()
-                    ->default(0),
-                Forms\Components\TextInput::make('delivery_fee')
-                    ->required()
-                    ->numeric()
-                    ->default(0),
-                Forms\Components\TextInput::make('service_charge')
-                    ->required()
-                    ->numeric()
-                    ->default(0),
-                Forms\Components\TextInput::make('discount_amount')
-                    ->required()
-                    ->numeric()
-                    ->default(0),
-                Forms\Components\TextInput::make('total_amount')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('estimated_prep_time')
-                    ->numeric(),
-                Forms\Components\DateTimePicker::make('estimated_delivery_time'),
-                Forms\Components\DateTimePicker::make('placed_at')
-                    ->required(),
-                Forms\Components\DateTimePicker::make('confirmed_at'),
-                Forms\Components\DateTimePicker::make('ready_at'),
-                Forms\Components\DateTimePicker::make('dispatched_at'),
-                Forms\Components\DateTimePicker::make('delivered_at'),
-                Forms\Components\Textarea::make('special_instructions')
-                    ->columnSpanFull(),
-                Forms\Components\Textarea::make('cancellation_reason')
-                    ->columnSpanFull(),
+                Forms\Components\Section::make('Order Information')
+                    ->schema([
+                        Forms\Components\TextInput::make('order_number')
+                            ->required()
+                            ->maxLength(50)
+                            ->default('ORD-' . date('Ymd') . '-' . strtoupper(\Illuminate\Support\Str::random(6))),
+                        Forms\Components\Select::make('customer_id')
+                            ->relationship('customer', 'name')
+                            ->searchable()
+                            ->preload()
+                            ->required(),
+                        Forms\Components\Select::make('restaurant_id')
+                            ->relationship('restaurant', 'name')
+                            ->searchable()
+                            ->preload()
+                            ->required(),
+                        Forms\Components\Select::make('branch_id')
+                            ->relationship('branch', 'name')
+                            ->searchable()
+                            ->preload()
+                            ->required(),
+                        Forms\Components\Select::make('delivery_address_id')
+                            ->relationship('deliveryAddress', 'address_line1')
+                            ->searchable()
+                            ->preload()
+                            ->required(),
+                        Forms\Components\Select::make('status')
+                            ->options([
+                                'pending' => 'Pending',
+                                'confirmed' => 'Confirmed',
+                                'preparing' => 'Preparing',
+                                'ready_for_pickup' => 'Ready for Pickup',
+                                'out_for_delivery' => 'Out for Delivery',
+                                'delivered' => 'Delivered',
+                                'cancelled' => 'Cancelled',
+                            ])
+                            ->required()
+                            ->default('pending'),
+                        Forms\Components\Select::make('order_type')
+                            ->options([
+                                'delivery' => 'Delivery',
+                                'pickup' => 'Pickup',
+                                'dine_in' => 'Dine In',
+                            ])
+                            ->required()
+                            ->default('delivery'),
+                        Forms\Components\Select::make('payment_status')
+                            ->options([
+                                'pending' => 'Pending',
+                                'paid' => 'Paid',
+                                'failed' => 'Failed',
+                                'refunded' => 'Refunded',
+                            ])
+                            ->required()
+                            ->default('pending'),
+                        Forms\Components\Select::make('payment_method')
+                            ->options([
+                                'cash' => 'Cash',
+                                'credit_card' => 'Credit Card',
+                                'gcash' => 'GCash',
+                                'paymaya' => 'Maya',
+                                'bank_transfer' => 'Bank Transfer',
+                            ])
+                            ->searchable(),
+                    ])
+                    ->columns(2),
+
+                Forms\Components\Section::make('Order Totals')
+                    ->schema([
+                        Forms\Components\TextInput::make('subtotal')
+                            ->required()
+                            ->numeric()
+                            ->default(0),
+                        Forms\Components\TextInput::make('tax_amount')
+                            ->required()
+                            ->numeric()
+                            ->default(0),
+                        Forms\Components\TextInput::make('delivery_fee')
+                            ->required()
+                            ->numeric()
+                            ->default(0),
+                        Forms\Components\TextInput::make('service_charge')
+                            ->required()
+                            ->numeric()
+                            ->default(0),
+                        Forms\Components\TextInput::make('discount_amount')
+                            ->required()
+                            ->numeric()
+                            ->default(0),
+                        Forms\Components\TextInput::make('total_amount')
+                            ->required()
+                            ->numeric()
+                            ->default(0),
+                    ])
+                    ->columns(2),
+
+                Forms\Components\Section::make('Timestamps')
+                    ->schema([
+                        Forms\Components\DateTimePicker::make('estimated_delivery_time'),
+                        Forms\Components\DateTimePicker::make('placed_at')
+                            ->default(now()),
+                        Forms\Components\DateTimePicker::make('confirmed_at'),
+                        Forms\Components\DateTimePicker::make('ready_at'),
+                        Forms\Components\DateTimePicker::make('dispatched_at'),
+                        Forms\Components\DateTimePicker::make('delivered_at'),
+                    ])
+                    ->columns(2),
+
+                Forms\Components\Section::make('Additional Information')
+                    ->schema([
+                        Forms\Components\Textarea::make('special_instructions')
+                            ->columnSpanFull(),
+                        Forms\Components\Textarea::make('cancellation_reason')
+                            ->columnSpanFull(),
+                    ]),
             ]);
     }
 
@@ -96,75 +146,61 @@ class OrderResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('tenant_id')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('order_number')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('customer_id')
-                    ->numeric()
+                    ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('restaurant_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('customer.name')
+                    ->label('Customer')
+                    ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('branch_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('restaurant.name')
+                    ->label('Restaurant')
+                    ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('delivery_address_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('branch.name')
+                    ->label('Branch')
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
-                    ->searchable(),
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'pending' => 'gray',
+                        'confirmed' => 'info',
+                        'preparing' => 'warning',
+                        'ready_for_pickup' => 'blue',
+                        'out_for_delivery' => 'indigo',
+                        'delivered' => 'success',
+                        'cancelled' => 'danger',
+                        default => 'gray',
+                    })
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('order_type')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('payment_status')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('payment_method')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('subtotal')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('tax_amount')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('delivery_fee')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('service_charge')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('discount_amount')
-                    ->numeric()
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'delivery' => 'primary',
+                        'pickup' => 'success',
+                        'dine_in' => 'info',
+                        default => 'gray',
+                    })
                     ->sortable(),
                 Tables\Columns\TextColumn::make('total_amount')
-                    ->numeric()
+                    ->money('PHP')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('estimated_prep_time')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('estimated_delivery_time')
-                    ->dateTime()
+                Tables\Columns\TextColumn::make('payment_status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'pending' => 'warning',
+                        'paid' => 'success',
+                        'failed' => 'danger',
+                        'refunded' => 'gray',
+                        default => 'gray',
+                    })
                     ->sortable(),
                 Tables\Columns\TextColumn::make('placed_at')
                     ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('confirmed_at')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('ready_at')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('dispatched_at')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('delivered_at')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                Tables\Columns\TextColumn::make('delivered_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -173,6 +209,7 @@ class OrderResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -185,7 +222,7 @@ class OrderResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\OrderItemsRelationManager::class,
         ];
     }
 
