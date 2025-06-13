@@ -115,24 +115,4 @@ class SearchForNearbyDrivers implements ShouldQueue
         }
         return $drivers;
     }
-     */
-    public function handle(): Collection
-    {
-        $haversine = "(6371 * acos(cos(radians(?) ) * cos(radians(current_latitude)) * cos(radians(current_longitude) - radians(?)) + sin(radians(?)) * sin(radians(current_latitude))))";
-
-        $query = Driver::query()
-            ->select('*')
-            ->selectRaw("{$haversine} AS distance", [$this->latitude, $this->longitude, $this->latitude])
-            ->where('is_available', true)
-            ->whereNotNull('current_latitude')
-            ->whereNotNull('current_longitude')
-            ->having('distance', '<=', $this->radiusKm)
-            ->orderBy('distance');
-
-        if ($this->limit) {
-            $query->limit($this->limit);
-        }
-
-        return $query->get();
-    }
 }
