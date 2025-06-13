@@ -76,4 +76,16 @@ class Restaurant extends Model
     {
         return $this->hasMany(\App\Models\MenuItem::class, 'restaurant_id');
     }
+
+    public function menuItemVariants()
+    {
+        return $this->hasManyThrough(
+            \App\Models\MenuItemVariant::class,
+            \App\Models\MenuItem::class,
+            'restaurant_id', // Foreign key on MenuItem table
+            'menu_item_id',  // Foreign key on MenuItemVariant table
+            'id',            // Local key on Restaurant table
+            'id'             // Local key on MenuItem table
+        );
+    }
 }

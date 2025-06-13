@@ -129,6 +129,7 @@ class RestaurantResource extends Resource
         return [
             MenuCategoryRelationManager::class,
             MenuItemRelationManager::class,
+            \App\Filament\Resources\RestaurantResource\RelationManagers\MenuItemVariantRelationManager::class,
         ];
     }
 

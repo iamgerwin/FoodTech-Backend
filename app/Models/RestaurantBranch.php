@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class RestaurantBranch extends Model
 {
+    public function branchMenuItemOverrides() {
+        return $this->hasMany(BranchMenuItemOverride::class, 'branch_id');
+    }
+    public function branchMenuItemVariantOverrides() {
+        return $this->hasMany(BranchMenuItemVariantOverride::class, 'branch_id');
+    }
     use HasFactory;
 
     /**

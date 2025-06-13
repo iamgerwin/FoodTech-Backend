@@ -119,7 +119,8 @@ class RestaurantBranchResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            \App\Filament\Resources\RestaurantBranchResource\RelationManagers\BranchMenuItemOverrideRelationManager::class,
+            \App\Filament\Resources\RestaurantBranchResource\RelationManagers\BranchMenuItemVariantOverrideRelationManager::class,
         ];
     }
 

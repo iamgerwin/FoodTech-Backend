@@ -14,9 +14,13 @@ class MenuItemVariantResource extends Resource
 {
     protected static ?string $model = MenuItemVariant::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-squares-2x2';
+    protected static ?string $navigationIcon = null;
+    protected static ?string $navigationGroup = null;
 
-    protected static ?string $navigationGroup = 'Menu Management';
+    public static function shouldRegisterNavigation(): bool
+    {
+        return false;
+    }
 
     public static function form(Form $form): Form
     {
