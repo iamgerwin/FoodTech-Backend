@@ -77,13 +77,10 @@ class DatabaseSeeder extends Seeder
                     // DEBUG: Log chain id and intended restaurant data
                     info('Seeding Restaurant', [
                         'tenant_id' => $tenant->id,
-                        'food_chain_id' => $chain->id,
-                        'food_chain_id_type' => gettype($chain->id),
                     ]);
                     $restaurants->push(
                         \App\Models\Restaurant::factory()->create([
                             'tenant_id' => $tenant->id,
-                            'food_chain_id' => $chain->id,
                         ])
                     );
                 }

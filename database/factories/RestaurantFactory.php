@@ -2,8 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\FoodChain;     // Added
-use App\Models\Tenant;  // Added
+use App\Models\Tenant;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,15 +17,8 @@ class RestaurantFactory extends Factory
      */
     public function definition(): array
     {
-        $tenantId = $this->faker->boolean(50) && Tenant::count() > 0
-                        ? Tenant::inRandomOrder()->first()->id
-                        : Tenant::factory()->create()->id;
-
-        $foodChainId = FoodChain::factory()->create(['tenant_id' => $tenantId])->id;
-
         return [
-            'tenant_id' => $tenantId,
-            'food_chain_id' => $foodChainId,
+            'tenant_id' => Tenant::factory(), // This will create a new Tenant for each restaurant
             'name' => $this->faker->company(),
             'slug' => $this->faker->slug(),
             'description' => $this->faker->sentence(),

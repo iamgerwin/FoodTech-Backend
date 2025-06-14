@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Stancl\Tenancy\Contracts\Tenant as TenantContract;
 use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
+use App\Models\Restaurant;
+use App\Models\User;
 
 class Tenant extends BaseTenant implements TenantContract
 {
@@ -34,5 +36,10 @@ class Tenant extends BaseTenant implements TenantContract
     public function users()
     {
         return $this->hasMany(User::class);
+    }
+
+    public function restaurants()
+    {
+        return $this->hasMany(Restaurant::class, 'tenant_id');
     }
 }

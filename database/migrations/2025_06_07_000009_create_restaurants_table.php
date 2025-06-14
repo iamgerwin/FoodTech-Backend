@@ -11,7 +11,6 @@ return new class extends Migration
         Schema::create('restaurants', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('tenant_id');
-            $table->uuid('food_chain_id');
             $table->string('name', 255);
             $table->string('slug', 255);
             $table->text('description')->nullable();
@@ -29,7 +28,6 @@ return new class extends Migration
 
             $table->unique(['tenant_id', 'slug']);
             $table->foreign('tenant_id')->references('id')->on('tenants')->onDelete('cascade');
-            $table->foreign('food_chain_id')->references('id')->on('food_chains')->onDelete('cascade');
         });
     }
 
