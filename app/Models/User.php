@@ -82,6 +82,11 @@ class User extends Authenticatable
         return $this->hasOne(CustomerProfile::class);
     }
 
+    public function customer()
+    {
+        return $this->hasOne(Customer::class);
+    }
+
     /**
      * Get the customer addresses for the user.
      */
