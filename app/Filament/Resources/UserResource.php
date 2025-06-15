@@ -43,9 +43,11 @@ class UserResource extends Resource
                     ->maxLength(255),
                 Forms\Components\Toggle::make('is_active')
                     ->required(),
-                Forms\Components\TextInput::make('user_type')
-                    ->required()
-                    ->maxLength(50),
+                Forms\Components\Select::make('user_type')
+    ->required()
+    ->options(collect(\App\Enums\UserType::cases())->mapWithKeys(fn($type) => [
+        $type->key() => $type->label()
+    ])->toArray()),
             ]);
     }
 
