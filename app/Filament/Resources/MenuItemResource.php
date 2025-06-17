@@ -155,7 +155,7 @@ class MenuItemResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            \App\Filament\Resources\MenuItemResource\RelationManagers\MenuAddOnsRelationManager::class,
         ];
     }
 

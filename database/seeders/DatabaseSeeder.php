@@ -203,5 +203,7 @@ class DatabaseSeeder extends Seeder
             'tenant_id' => $tenants->first()->id,
             'user_type' => 'developer',
         ]);
+        // Seed MenuAddOns and attach to MenuItems and MenuItemVariants
+        $this->call(MenuAddOnSeeder::class);
     }
 }
