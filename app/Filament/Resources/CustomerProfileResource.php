@@ -22,12 +22,12 @@ class CustomerProfileResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('tenant_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('user_id')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\Select::make('user_id')
+                    ->label('Customer')
+                    ->relationship('user', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->required(),
                 Forms\Components\DatePicker::make('date_of_birth'),
                 Forms\Components\TextInput::make('gender')
                     ->maxLength(20),
@@ -54,12 +54,21 @@ class CustomerProfileResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('tenant_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('user_id')
-                    ->numeric()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('user.name')
+                    ->label('Customer Name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('user.email')
+                    ->label('Email')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('user.phone')
+                    ->label('Phone'),
+                Tables\Columns\TextColumn::make('primary_address')
+                    ->label('Primary Address')
+                    ->getStateUsing(function ($record) {
+                        $address = $record->addresses->first();
+                        if (!$address) return '-';
+                        return $address->address_line1 . ', ' . $address->city . ', ' . $address->country;
+                    }),
                 Tables\Columns\TextColumn::make('date_of_birth')
                     ->date()
                     ->sortable(),
