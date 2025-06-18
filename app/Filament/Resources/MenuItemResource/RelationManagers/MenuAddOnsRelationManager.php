@@ -4,10 +4,9 @@ namespace App\Filament\Resources\MenuItemResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Tables;
-use Filament\Resources\RelationManagers\BelongsToManyRelationManager;
-use Illuminate\Database\Eloquent\Builder;
+use Filament\Resources\RelationManagers\RelationManager;
 
-class MenuAddOnsRelationManager extends BelongsToManyRelationManager
+class MenuAddOnsRelationManager extends RelationManager
 {
     protected static string $relationship = 'menuAddOns';
     protected static ?string $recordTitleAttribute = 'name';
