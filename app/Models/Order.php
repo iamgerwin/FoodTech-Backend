@@ -27,6 +27,9 @@ class Order extends Model
      */
     public $incrementing = false;
 
+    // Status constants
+    public const STATUS_CART = 'cart'; // Not yet checked out, in progress
+
     protected static function boot()
     {
         parent::boot();
@@ -95,5 +98,27 @@ class Order extends Model
     public function items()
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    /**
+     * Scope a query to only include cart orders (not yet checked out).
+     */
+    public function scopeCart($query)
+    {
+        return $query->where('status', self::STATUS_CART);
+    }
+
+    /**
+     * Get the current cart (in-progress order) for a given user.
+     *
+     * @param int|string $customerId
+     * @return Order|null
+     */
+    public static function getCurrentCartForUser($customerId)
+    {
+        return self::where('customer_id', $customerId)
+            ->cart()
+            ->latest('created_at')
+            ->first();
     }
 }
