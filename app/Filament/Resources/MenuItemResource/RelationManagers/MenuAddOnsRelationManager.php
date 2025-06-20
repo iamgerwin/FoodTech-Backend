@@ -11,7 +11,7 @@ class MenuAddOnsRelationManager extends RelationManager
     protected static string $relationship = 'menuAddOns';
     protected static ?string $recordTitleAttribute = 'name';
 
-    public static function form(Forms\Form $form): Forms\Form
+    public function form(Forms\Form $form): Forms\Form
     {
         return $form
             ->schema([
@@ -27,7 +27,7 @@ class MenuAddOnsRelationManager extends RelationManager
             ]);
     }
 
-    public static function table(Tables\Table $table): Tables\Table
+    public function table(Tables\Table $table): Tables\Table
     {
         return $table
             ->columns([
