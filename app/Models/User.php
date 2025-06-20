@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use App\Enums\OnboardingState;
 
 class User extends Authenticatable
 {
@@ -54,6 +55,7 @@ class User extends Authenticatable
         'avatar',
         'is_active',
         'user_type',
+        'onboarding_state', // Added onboarding state
     ];
 
     /**
@@ -106,5 +108,59 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Check if user is approved
+     * @return bool
+     */
+    public function isApproved(): bool
+    {
+        return $this->onboarding_state === \App\Enums\OnboardingState::Approved->value; // Enum-based
+    }
+
+    /**
+     * Check if user is pending
+     * @return bool
+     */
+    public function isPending(): bool
+    {
+        return $this->onboarding_state === OnboardingState::Pending->value; // Enum-based
+    }
+
+    /**
+     * Check if user is declined
+     * @return bool
+     */
+    public function isDeclined(): bool
+    {
+        return $this->onboarding_state === OnboardingState::Declined->value; // Enum-based
+    }
+
+    /**
+     * Set onboarding state to approved
+     */
+    public function setApproved(): void
+    {
+        $this->onboarding_state = OnboardingState::Approved->value;
+        $this->save();
+    }
+
+    /**
+     * Set onboarding state to pending
+     */
+    public function setPending(): void
+    {
+        $this->onboarding_state = OnboardingState::Pending->value;
+        $this->save();
+    }
+
+    /**
+     * Set onboarding state to declined
+     */
+    public function setDeclined(): void
+    {
+        $this->onboarding_state = OnboardingState::Declined->value;
+        $this->save();
     }
 }

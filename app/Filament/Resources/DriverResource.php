@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\DriverResource\Pages;
 use App\Jobs\ImportDriversJob;
 use App\Models\Driver;
+use App\Enums\OnboardingState;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
@@ -67,6 +68,13 @@ class DriverResource extends Resource
                     ->required()
                     ->numeric()
                     ->default(0),
+                Forms\Components\Select::make('user.onboarding_state')
+                    ->label('Onboarding State')
+                    ->options(collect(OnboardingState::cases())->mapWithKeys(fn($state) => [
+                        $state->value => $state->info()['label']
+                    ])->toArray())
+                    ->required()
+                    ->relationship('user', 'onboarding_state'),
             ]);
     }
 
@@ -81,6 +89,15 @@ class DriverResource extends Resource
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('User')
                     ->searchable()
+                    ->sortable(),
+                Tables\Columns\BadgeColumn::make('user.onboarding_state')
+                    ->label('Onboarding State')
+                    ->formatStateUsing(fn($state) => OnboardingState::tryFrom($state)?->info()['label'] ?? $state)
+                    ->colors([
+                        'primary' => OnboardingState::Pending->value,
+                        'success' => OnboardingState::Approved->value,
+                        'danger' => OnboardingState::Declined->value,
+                    ])
                     ->sortable(),
                 Tables\Columns\TextColumn::make('license_number')
                     ->searchable(),

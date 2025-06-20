@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
+use App\Enums\OnboardingState;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -48,6 +49,12 @@ class UserResource extends Resource
     ->options(collect(\App\Enums\UserType::cases())->mapWithKeys(fn($type) => [
         $type->key() => $type->label()
     ])->toArray()),
+Forms\Components\Select::make('onboarding_state')
+    ->label('Onboarding State')
+    ->options(collect(OnboardingState::cases())->mapWithKeys(fn($state) => [
+        $state->value => $state->info()['label']
+    ])->toArray())
+    ->required(),
             ]);
     }
 
@@ -81,6 +88,14 @@ class UserResource extends Resource
                     ->boolean(),
                 Tables\Columns\TextColumn::make('user_type')
                     ->searchable(),
+                Tables\Columns\BadgeColumn::make('onboarding_state')
+                    ->label('Onboarding State')
+                    ->formatStateUsing(fn($state) => OnboardingState::tryFrom($state)?->info()['label'] ?? $state)
+                    ->colors([
+                        'primary' => OnboardingState::Pending->value,
+                        'success' => OnboardingState::Approved->value,
+                        'danger' => OnboardingState::Declined->value,
+                    ]),
             ])
             ->filters([
                 //

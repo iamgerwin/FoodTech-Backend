@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CustomerProfileResource\Pages;
 use App\Models\CustomerProfile;
+use App\Enums\OnboardingState;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -47,6 +48,13 @@ class CustomerProfileResource extends Resource
                     ->maxLength(50),
                 Forms\Components\Textarea::make('dietary_preferences')
                     ->columnSpanFull(),
+                Forms\Components\Select::make('user.onboarding_state')
+                    ->label('Onboarding State')
+                    ->options(collect(OnboardingState::cases())->mapWithKeys(fn($state) => [
+                        $state->value => $state->info()['label']
+                    ])->toArray())
+                    ->required()
+                    ->relationship('user', 'onboarding_state'),
             ]);
     }
 
@@ -74,6 +82,14 @@ class CustomerProfileResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('gender')
                     ->searchable(),
+                Tables\Columns\BadgeColumn::make('user.onboarding_state')
+                    ->label('Onboarding State')
+                    ->formatStateUsing(fn($state) => OnboardingState::tryFrom($state)?->info()['label'] ?? $state)
+                    ->colors([
+                        'primary' => OnboardingState::Pending->value,
+                        'success' => OnboardingState::Approved->value,
+                        'danger' => OnboardingState::Declined->value,
+                    ]),
                 Tables\Columns\TextColumn::make('loyalty_points')
                     ->numeric()
                     ->sortable(),
