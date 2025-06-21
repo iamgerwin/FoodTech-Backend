@@ -79,4 +79,17 @@ class MenuItem extends Model
     {
         return $this->hasMany(MenuItemVariant::class);
     }
+
+    /**
+     * The menu add-ons that belong to the menu item.
+     */
+    public function menuAddOns()
+    {
+        return $this->belongsToMany(
+            MenuAddOn::class,
+            'menu_add_on_menu_item', // pivot table name
+            'menu_item_id',          // foreign key on pivot table for this model
+            'menu_add_on_id'         // foreign key on pivot table for related model
+        );
+    }
 }
