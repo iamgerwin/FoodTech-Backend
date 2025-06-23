@@ -29,7 +29,7 @@ class MenuCategoryRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('name')->searchable(),
                 Tables\Columns\TextColumn::make('description')->limit(50),
-                Tables\Columns\IconColumn::make('is_active')->boolean(),
+                Tables\Columns\ToggleColumn::make('is_active'),
             ])
             ->filters([
                 //

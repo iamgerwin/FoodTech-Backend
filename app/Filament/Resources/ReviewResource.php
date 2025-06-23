@@ -70,10 +70,8 @@ class ReviewResource extends Resource
                 Tables\Columns\TextColumn::make('rating')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\IconColumn::make('is_anonymous')
-                    ->boolean(),
-                Tables\Columns\IconColumn::make('is_approved')
-                    ->boolean(),
+                Tables\Columns\ToggleColumn::make('is_anonymous'),
+                Tables\Columns\ToggleColumn::make('is_approved'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

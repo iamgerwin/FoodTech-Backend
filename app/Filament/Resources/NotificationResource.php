@@ -64,8 +64,7 @@ class NotificationResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('type')
                     ->searchable(),
-                Tables\Columns\IconColumn::make('is_read')
-                    ->boolean(),
+                Tables\Columns\ToggleColumn::make('is_read'),
                 Tables\Columns\TextColumn::make('sent_at')
                     ->dateTime()
                     ->sortable(),

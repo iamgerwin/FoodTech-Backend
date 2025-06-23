@@ -64,8 +64,7 @@ class MenuCategoryResource extends Resource
                 Tables\Columns\TextColumn::make('sort_order')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\IconColumn::make('is_active')
-                    ->boolean(),
+                Tables\Columns\ToggleColumn::make('is_active'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

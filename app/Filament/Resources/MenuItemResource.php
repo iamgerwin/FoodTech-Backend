@@ -112,21 +112,15 @@ class MenuItemResource extends Resource
                 Tables\Columns\TextColumn::make('calories')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\IconColumn::make('is_vegetarian')
-                    ->boolean(),
-                Tables\Columns\IconColumn::make('is_vegan')
-                    ->boolean(),
-                Tables\Columns\IconColumn::make('is_gluten_free')
-                    ->boolean(),
-                Tables\Columns\IconColumn::make('is_spicy')
-                    ->boolean(),
+                Tables\Columns\ToggleColumn::make('is_vegetarian'),
+                Tables\Columns\ToggleColumn::make('is_vegan'),
+                Tables\Columns\ToggleColumn::make('is_gluten_free'),
+                Tables\Columns\ToggleColumn::make('is_spicy'),
                 Tables\Columns\TextColumn::make('spice_level')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\IconColumn::make('is_available')
-                    ->boolean(),
-                Tables\Columns\IconColumn::make('is_featured')
-                    ->boolean(),
+                Tables\Columns\ToggleColumn::make('is_available'),
+                Tables\Columns\ToggleColumn::make('is_featured'),
                 Tables\Columns\TextColumn::make('sort_order')
                     ->numeric()
                     ->sortable(),

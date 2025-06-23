@@ -30,7 +30,7 @@ class MenuItemRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('name')->searchable(),
                 Tables\Columns\TextColumn::make('description')->limit(50),
                 Tables\Columns\TextColumn::make('price')->money('PHP'),
-                Tables\Columns\IconColumn::make('is_available')->boolean(),
+                Tables\Columns\ToggleColumn::make('is_available'),
             ])
             ->filters([
                 //

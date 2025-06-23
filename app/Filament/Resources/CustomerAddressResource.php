@@ -83,8 +83,7 @@ class CustomerAddressResource extends Resource
                 Tables\Columns\TextColumn::make('longitude')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\IconColumn::make('is_default')
-                    ->boolean(),
+                Tables\Columns\ToggleColumn::make('is_default'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

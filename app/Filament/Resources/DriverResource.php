@@ -110,12 +110,9 @@ class DriverResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('vehicle_model')
                     ->searchable(),
-                Tables\Columns\IconColumn::make('is_verified')
-                    ->boolean(),
-                Tables\Columns\IconColumn::make('is_active')
-                    ->boolean(),
-                Tables\Columns\IconColumn::make('is_available')
-                    ->boolean(),
+                Tables\Columns\ToggleColumn::make('is_verified'),
+                Tables\Columns\ToggleColumn::make('is_active'),
+                Tables\Columns\ToggleColumn::make('is_available'),
                 Tables\Columns\TextColumn::make('current_latitude')
                     ->numeric()
                     ->sortable(),

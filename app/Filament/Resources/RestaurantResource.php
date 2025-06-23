@@ -98,8 +98,7 @@ class RestaurantResource extends Resource
                 Tables\Columns\TextColumn::make('service_charge_percentage')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\IconColumn::make('is_active')
-                    ->boolean(),
+                Tables\Columns\ToggleColumn::make('is_active'),
                 Tables\Columns\TextColumn::make('opens_at'),
                 Tables\Columns\TextColumn::make('closes_at'),
                 Tables\Columns\TextColumn::make('created_at')

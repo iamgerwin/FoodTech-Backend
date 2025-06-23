@@ -112,8 +112,7 @@ class CouponResource extends Resource
                 Tables\Columns\TextColumn::make('expires_at')
                     ->dateTime()
                     ->sortable(),
-                Tables\Columns\IconColumn::make('is_active')
-                    ->boolean(),
+                Tables\Columns\ToggleColumn::make('is_active'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

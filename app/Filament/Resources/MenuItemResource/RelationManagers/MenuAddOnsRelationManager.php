@@ -33,7 +33,7 @@ class MenuAddOnsRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('price')->money('PHP'),
-                Tables\Columns\IconColumn::make('is_available')->boolean(),
+                Tables\Columns\ToggleColumn::make('is_available'),
                 Tables\Columns\TextColumn::make('sort_order'),
             ])
             ->filters([

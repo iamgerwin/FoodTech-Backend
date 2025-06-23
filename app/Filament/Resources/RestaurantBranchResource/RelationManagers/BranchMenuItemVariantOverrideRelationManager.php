@@ -42,7 +42,7 @@ class BranchMenuItemVariantOverrideRelationManager extends RelationManager
                     ->money('PHP')
                     ->description(fn ($record) => $record->custom_price_modifier ? 'Overridden' : 'Default')
                     ->color(fn ($record) => $record->custom_price_modifier ? 'primary' : 'gray'),
-                Tables\Columns\IconColumn::make('is_overridden')
+                Tables\Columns\ToggleColumn::make('is_overridden')
                     ->label('Overridden')
                     ->boolean()
                     ->getStateUsing(fn ($record) => $record->custom_name || $record->custom_price_modifier),

@@ -45,8 +45,8 @@ class MenuItemVariantRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('name')->searchable(),
                 Tables\Columns\TextColumn::make('type')->searchable(),
                 Tables\Columns\TextColumn::make('price_modifier')->numeric()->sortable(),
-                Tables\Columns\IconColumn::make('is_required')->boolean(),
-                Tables\Columns\IconColumn::make('is_available')->boolean(),
+                Tables\Columns\ToggleColumn::make('is_required'),
+                Tables\Columns\ToggleColumn::make('is_available'),
                 Tables\Columns\TextColumn::make('sort_order')->numeric()->sortable(),
             ])
             ->filters([])

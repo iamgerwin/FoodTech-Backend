@@ -84,8 +84,7 @@ Forms\Components\Select::make('onboarding_state')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('avatar')
                     ->searchable(),
-                Tables\Columns\IconColumn::make('is_active')
-                    ->boolean(),
+                Tables\Columns\ToggleColumn::make('is_active'),
                 Tables\Columns\TextColumn::make('user_type')
                     ->searchable(),
                 Tables\Columns\BadgeColumn::make('onboarding_state')
