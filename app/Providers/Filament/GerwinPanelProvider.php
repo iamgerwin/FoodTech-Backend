@@ -39,6 +39,7 @@ class GerwinPanelProvider extends PanelProvider
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
+                Widgets\CouponUsageWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
