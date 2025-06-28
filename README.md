@@ -22,6 +22,9 @@ This project is a **multi-tenant food delivery backend** built with Laravel 12, 
 
 ### Database Structure
 
+#### Entity Relationship Diagram (ERD)
+You can view the initial ERD for this project here: [Project ERD on dbdiagram.io](https://dbdiagram.io/d/6843a02d5a9a94714e4b1f97)
+
 See `/database/migrations/` for the full schema. Main modules and tables:
 
 #### Multi-Tenancy & Users
