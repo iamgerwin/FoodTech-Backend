@@ -21,18 +21,60 @@ This project is a **multi-tenant food delivery backend** built with Laravel 12, 
   - Delivery, reviews, promotions, payments, notifications, and logging
 
 ### Database Structure
-See `/database/migrations/` for the full schema. Main modules:
 
-#### Entity Relationship Diagram (ERD)
-You can view the initial ERD for this project here: [Project ERD on dbdiagram.io](https://dbdiagram.io/d/6843a02d5a9a94714e4b1f97)
+See `/database/migrations/` for the full schema. Main modules and tables:
 
-- Multi-tenancy: tenants, users, roles, permissions
-- Business: food_chains, restaurants, restaurant_branches
-- Menu: menu_categories, menu_items, menu_item_variants
-- Customers: customer_profiles, customer_addresses
-- Orders: orders, order_items, order_item_variants
-- Delivery: drivers, deliveries
-- Reviews, coupons, coupon_usages, payment_transactions, notifications, activity_log
+#### Multi-Tenancy & Users
+- tenants
+- users
+- password_reset_tokens
+- sessions
+
+#### Permissions & Roles
+- permissions
+- roles
+- model_has_permissions
+- model_has_roles
+- role_has_permissions
+
+#### Business Entities
+- food_chains
+- restaurants
+- restaurant_branches
+
+#### Menu System
+- menu_categories
+- menu_items
+- menu_item_variants
+- branch_menu_item_overrides
+- branch_menu_item_variant_overrides
+- menu_add_ons
+- menu_add_on_menu_item
+- categories
+
+#### Customers
+- customer_profiles
+- customer_addresses
+- customers
+
+#### Orders & Delivery
+- orders
+- order_items
+- order_item_variants
+- deliveries
+- drivers
+
+#### Promotions & Payments
+- coupons
+- coupon_usages
+- payment_transactions
+
+#### Notifications & Activity
+- notifications
+- activity_log
+
+#### Reviews & Misc
+- reviews
 
 ---
 
